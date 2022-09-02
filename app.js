@@ -14,7 +14,7 @@ const displayCategories = category => {
         const li = document.createElement('li')
         li.classList.add("nav-item")
         li.innerHTML = `
-        <a class="nav-link text-black fs-4 px-3" onclick="loadDetails('${category_id}')" aria-current="page" href="#">${category_name}</a>
+        <a class="nav-link active text-black fs-4 px-3" onclick="loadDetails('${category_id}')" aria-current="page" href="#">${category_name}</a>
         `;
         catContainer.appendChild(li)
     });
@@ -27,10 +27,51 @@ const loadDetails = (id) => {
 }
 const displayDetails = (details) => {
     // console.log(details)
+    const postContainer = document.getElementById('post_container');
+    postContainer.textContent = ""
     details.forEach(detail => {
         // console.log(detail)
-        const { author, details, title, total_view, rating, image_url } = detail
-        console.log(author, details, title, total_view, rating, image_url)
+        // if (detail == "null") {
+        //     const errorMessage = document.getElementById("error");
+        //     errorMessage.classList.remove("d-none")
+        //     return;
+        // }
+        const { author, details, title, total_view, rating, image_url, _id } = detail
+        // console.log(author, details, title, total_view, rating, image_url)
+        const div = document.createElement("div")
+        div.classList.add("card", "mb-3")
+        div.innerHTML = `
+        <div class="row g-0">
+        <div class="col-md-4">
+            <img src="${image_url}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">${details.slice(0, 250)}...</p>
+                <div class="card-text d-flex gap-5">
+                    <div class="author d-flex">
+                        <div><img class="me-2" src="${author.img}" alt=""  style="height: 54px; width: 54px;border-radius: 50%"></div>
+                        <div>
+                            <h5>${author.name}</h5>
+                            <p>${author.published_date}</p>
+                        </div>
+                    </div>
+                    <div class="view my-auto fw-semibold fs-4"> ${total_view}</div>
+                    <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
+                    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  ms-auto">Details</button>
+                </div>
+            </div>
+        </div>
+    </div>`;
+        postContainer.appendChild(div)
     })
+}
+
+const seeDetails = (news_id) => {
+    const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+    fetch(url)
+        .then(res => res.json())
+    console.log("See Details", news_id, url)
 }
 loadCategoris()
