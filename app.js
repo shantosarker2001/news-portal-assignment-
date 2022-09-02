@@ -42,19 +42,14 @@ const displayDetails = (details, name) => {
         counter.classList.add("bg-primary")
         counter.innerHTML = `<h3 class="text-white py-2 px-3">${details.length} items founds for this ${name}</h3>`
     }
+    // const viewContainer = document.getElementById('viewSection')
+    // viewSection.innerHTML = `https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
+    // <div></div>
+    // `
     const postContainer = document.getElementById('post_container');
     postContainer.textContent = ""
     details.forEach((detail) => {
-
-        // console.log(detail)
-        // if (detail == "null") {
-        //     const errorMessage = document.getElementById("error");
-        //     errorMessage.classList.remove("d-none")
-        //     return;
-        // }
         const { author, details, title, rating, image_url, _id, thumbnail_url } = detail
-        // console.log(author, details, title, total_view, rating, image_url)
-
         const div = document.createElement("div")
         div.classList.add("card", "mb-3")
         div.innerHTML = `
@@ -76,7 +71,7 @@ const displayDetails = (details, name) => {
                     </div>
               
                     <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
-                    <div class="rating  my-auto fw-semibold fs-4">${detail.total_view ? detail.total_view : "No data Found"
+                    <div class="rating  my-auto fw-semibold fs-4"><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"
             }</div >
     <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
                 </div >
