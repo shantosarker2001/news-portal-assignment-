@@ -57,9 +57,9 @@ const displayDetails = (details) => {
                             <p>${author.published_date}</p>
                         </div>
                     </div>
-                    <div class="view my-auto fw-semibold fs-4"> ${total_view}</div>
+              
                     <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
-                    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  ms-auto">Details</button>
+                    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  ms-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
                 </div>
             </div>
         </div>
@@ -72,6 +72,19 @@ const seeDetails = (news_id) => {
     const url = `https://openapi.programming-hero.com/api/news/${news_id}`
     fetch(url)
         .then(res => res.json())
-    console.log("See Details", news_id, url)
+        .then(details => showModal(details.data[0]))
+}
+const showModal = data => {
+    console.log(data)
+    const { thumbnail_url, total_view, author, rating, title } = data
+    document.getElementById("exampleModalLabel").innerHTML = `<h3>${title}</h3>`;
+    document.getElementById("body").innerHTML = `
+    <img src="${thumbnail_url}" class="w-100"  alt="">
+   <div>
+   <h5>Review: ${rating.badge}</h5>
+   <h5>Total view: ${total_view}</h5>
+   <h5>Published on ${author.published_date}</h5></div>
+    `
+
 }
 loadCategoris()
