@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <header>
+    <header class="">
         <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="#">News Seeker</a>
@@ -22,10 +22,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="#">Home</a>
+                            <a class="nav-link " aria-current="page" href="index.html">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Blogs</a>
+                            <a class="nav-link" href="blog.html">Blogs</a>
                         </li>
 
 
@@ -47,16 +47,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="list_container">
-
                     </ul>
                 </div>
             </div>
         </nav>
+        <section>
+            <div class="container   rounded-4" id="conter">
+
+            </div>
+        </section>
     </header>
     <main class="container">
-        <h1 id="error" class="text-danger d-none">NO Data Found</h1>
+
         <section id="post_container" class="mt-4">
 
+        </section>
+        <section id="loader" class="d-none">
+            <div style="height:400px" class="d-flex justify-content-center align-items-center">
+                <div class="spinner-border  text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
         </section>
         <section>
             <!-- Button trigger modal -->

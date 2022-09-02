@@ -3,6 +3,7 @@ const loadCategoris = () => {
     fetch(url)
         .then(res => res.json())
         .then(category => displayCategories(category.data.news_category))
+        .catch(error => console.log(error))
 }
 const displayCategories = category => {
     // console.log(category)
@@ -14,30 +15,46 @@ const displayCategories = category => {
         const li = document.createElement('li')
         li.classList.add("nav-item")
         li.innerHTML = `
-        <a class="nav-link active text-black fs-4 px-3" onclick="loadDetails('${category_id}')" aria-current="page" href="#">${category_name}</a>
+        <a class="nav-link active text-black fs-4 px-3" onclick="loadDetails('${category_id}','${category_name}')" aria-current="page" href="#">${category_name}</a>
         `;
         catContainer.appendChild(li)
     });
 }
-const loadDetails = (id) => {
+const loadDetails = (id, name) => {
+    toggleSpinners(true)
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
+
     fetch(url)
         .then(res => res.json())
-        .then(data => displayDetails(data.data))
+        .then(data => displayDetails(data.data, name))
+        .catch(error => console.log(error))
+
 }
-const displayDetails = (details) => {
-    // console.log(details)
+const displayDetails = (details, name) => {
+    console.log(details)
+    const counter = document.getElementById("conter")
+
+    if (details.length === 0) {
+        counter.classList.add("bg-primary")
+        counter.innerHTML = `<h3 class="text-white py-2 px-3">No Data Found</h3>`
+    }
+    else {
+        counter.classList.add("bg-primary")
+        counter.innerHTML = `<h3 class="text-white py-2 px-3">${details.length} items founds for this ${name}</h3>`
+    }
     const postContainer = document.getElementById('post_container');
     postContainer.textContent = ""
-    details.forEach(detail => {
+    details.forEach((detail) => {
+
         // console.log(detail)
         // if (detail == "null") {
         //     const errorMessage = document.getElementById("error");
         //     errorMessage.classList.remove("d-none")
         //     return;
         // }
-        const { author, details, title, total_view, rating, image_url, _id } = detail
+        const { author, details, title, rating, image_url, _id, thumbnail_url } = detail
         // console.log(author, details, title, total_view, rating, image_url)
+
         const div = document.createElement("div")
         div.classList.add("card", "mb-3")
         div.innerHTML = `
@@ -47,25 +64,30 @@ const displayDetails = (details) => {
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h5 class="card-title">${title}</h5>
-                <p class="card-text">${details.slice(0, 250)}...</p>
+                <h4 class="card-title">${title} </h4>
+                <p class="card-text">${details.slice(0, 450)}...</p>
                 <div class="card-text d-flex gap-5">
                     <div class="author d-flex">
                         <div><img class="me-2" src="${author.img}" alt=""  style="height: 54px; width: 54px;border-radius: 50%"></div>
                         <div>
-                            <h5>${author.name}</h5>
-                            <p>${author.published_date}</p>
+                            <h5>${author.name ? author.name : "No data found"}</h5>
+                            <p>${author.published_date ? author.published_date : "No data found"}</p>
                         </div>
                     </div>
               
                     <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
-                    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  ms-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
-                </div>
-            </div>
-        </div>
-    </div>`;
+                    <div class="rating  my-auto fw-semibold fs-4">${detail.total_view ? detail.total_view : "No data Found"
+            }</div >
+    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+                </div >
+            </div >
+        </div >
+    </div > `;
+
         postContainer.appendChild(div)
-    })
+
+    });
+    toggleSpinners(false)
 }
 
 const seeDetails = (news_id) => {
@@ -73,13 +95,14 @@ const seeDetails = (news_id) => {
     fetch(url)
         .then(res => res.json())
         .then(details => showModal(details.data[0]))
+        .catch(error => console.log(error))
 }
 const showModal = data => {
     console.log(data)
-    const { thumbnail_url, total_view, author, rating, title } = data
+    const { image_url, thumbnail_url, total_view, author, rating, title } = data
     document.getElementById("exampleModalLabel").innerHTML = `<h3>${title}</h3>`;
     document.getElementById("body").innerHTML = `
-    <img src="${thumbnail_url}" class="w-100"  alt="">
+    <img src="${image_url}" class="w-100"  alt="">
    <div>
    <h5>Review: ${rating.badge}</h5>
    <h5>Total view: ${total_view}</h5>
@@ -88,3 +111,12 @@ const showModal = data => {
 
 }
 loadCategoris()
+const toggleSpinners = isloading => {
+    const loaderSection = document.getElementById("loader")
+    if (isloading) {
+        loaderSection.classList.remove("d-none")
+    }
+    else {
+        loaderSection.classList.add("d-none")
+    }
+}
