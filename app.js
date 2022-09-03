@@ -18,7 +18,7 @@ const displayCategories = category => {
         const li = document.createElement('li')
         li.classList.add("nav-item")
         li.innerHTML = `
-        <a class="nav-link active text-black fs-4 px-3" onclick="loadDetails('${category_id}','${category_name}')" aria-current="page" href="#">${category_name}</a>
+        <a class="nav-link active text-black fs-5 px-3" onclick="loadDetails('${category_id}','${category_name}')" aria-current="page" href="#">${category_name}</a>
         `;
         catContainer.appendChild(li)
     });
@@ -75,7 +75,7 @@ const displayDetails = (details, name) => {
 
         <div class="row g-0">
                         <div class="col-md-3">
-                            <img src="${image_url}" class="img-fluid rounded-start d-block my-3 p-2 border" " alt="...">
+                            <img src="${image_url}" class="img-fluid rounded-start d-block my-3 p-2 border ms-2" " alt="...">
                         </div>
 
                         <div class="col-md-9">
