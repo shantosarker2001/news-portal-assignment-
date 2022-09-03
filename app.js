@@ -82,22 +82,21 @@ const displayDetails = (details, name) => {
                                     <h5 class="card-title">${title} </h5>
                                     <p class="card-text">${details.slice(0, 200)}...</p>
                                 </div>
-                                    <div class="card-text row gap-0 mt-2">
+                                    <div class="card-text row gap-0 mt-3">
                                         <div class="author d-flex col-6 col-lg-3">
                                             <div>
                                                 <img class="me-2" src="${author.img}" alt=""
-                                                    style="height: 54px; width: 54px;border-radius: 50%">
+                                                    style="height: 60px; width: 60px;border-radius: 50%">
                                             </div>
                                             <div>
-                                                <p>${author.name ? author.name : "No user found"}</p>
-                                                <p>${author.published_date ? author.published_date : "No date found"}
-                                                </p>
+                                                <h5 class="my-2 text-center">${author.name ? author.name : "No user found"}</h5>
+                                                
                                             </div>
                                         </div>
-
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No viewers"}</div>
                                         <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-star-half text-black me-3"></i>${rating.number}
                                         </div>
-                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No viewers"}</div>
+                                        
                                         <div class=" col-6 col-lg-3 " >
                                         <button onclick="seeDetails('${_id}')"
                                                 class="btn btn-danger px-4 ms-auto "
@@ -126,13 +125,15 @@ const seeDetails = (news_id) => {
 const showModal = data => {
     console.log(data)
     const { image_url, thumbnail_url, total_view, author, rating, title } = data
-    document.getElementById("exampleModalLabel").innerHTML = `<h3>${title}</h3>`;
+    document.getElementById("exampleModalLabel").innerHTML = `<h4>${title}</h4>`;
     document.getElementById("body").innerHTML = `
     <img src="${thumbnail_url}" class="w-100" alt="">
    <div>
    <h5>Review: ${rating.badge}</h5>
    <h5>Total view: ${total_view ? total_view : "No viewers available"}</h5>
-   <h5>Author: ${author.name ? author.name : "No author available"}</h5></div>
+   <h5>Author: ${author.name ? author.name : "No author available"}</h5>
+   <h5>Published on ${author.published_date ? author.published_date : "No date found"}</h5>
+   </div>
     `;
 }
 loadCategoris()
