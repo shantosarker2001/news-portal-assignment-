@@ -5,7 +5,7 @@ const loadCategoris = () => {
     fetch(url)
         .then(res => res.json())
         .then(category => displayCategories(category.data.news_category))
-        .catch(error => console.log(error))
+        .catch(error => console.log("There was an error:", error))
 }
 
 const displayCategories = category => {
@@ -18,7 +18,7 @@ const displayCategories = category => {
         const li = document.createElement('li')
         li.classList.add("nav-item")
         li.innerHTML = `
-        <a class="nav-link active text-black fs-5 px-3" onclick="loadDetails('${category_id}','${category_name}')" aria-current="page" href="#">${category_name}</a>
+        <a class="nav-link active text-black fs-5 px-3 fw-semibold" onclick="loadDetails('${category_id}','${category_name}')" aria-current="page" href="#">${category_name}</a>
         `;
         catContainer.appendChild(li)
     });
@@ -34,27 +34,26 @@ const loadDetails = (id, name) => {
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.data, name))
-
-        .catch(error => console.log(error))
+        .catch(error => console.log("There was an error:", error))
 
 }
 
 const displayDetails = (details, name) => {
     console.log(details)
     const sortBy = document.getElementById('sortBy')
-    const counter = document.getElementById("conter")
+    let counter = document.getElementById("conter")
     document.getElementById("footer").style.marginTop = "0px"
 
     if (details.length === 0) {
         counter.classList.add("bg-light")
         sortBy.classList.add("d-none")
-        counter.innerHTML = `<h3 class=" py-2 px-3">No Data Found</h3>`
+        counter.innerHTML = `<h3 class=" py-2 px-3 text-center text-danger">404 No Data Found!</h3>`
         document.getElementById("footer").style.marginTop = "50vh"
     }
     else {
         sortBy.classList.remove("d-none")
         counter.classList.add("bg-light")
-        counter.innerHTML = `<h3 class=" py-2 px-3">${details.length} items founds for ${name}</h3>`
+        counter.innerHTML = `<h3 class=" py-2 px-3 text-center text-danger">Showing ${details.length} results for ${name}</h3>`
     }
     // const viewContainer = document.getElementById('viewSection')
     // viewSection.innerHTML = `https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
@@ -77,7 +76,6 @@ const displayDetails = (details, name) => {
                         <div class="col-md-3">
                             <img src="${image_url}" class="img-fluid rounded-start d-block my-3 p-2 border ms-2" " alt="...">
                         </div>
-
                         <div class="col-md-9">
                             <div class="card-body">
                                 <div class="row ">
@@ -91,22 +89,21 @@ const displayDetails = (details, name) => {
                                                     style="height: 54px; width: 54px;border-radius: 50%">
                                             </div>
                                             <div>
-                                                <p>${author.name ? author.name : "No data found"}</p>
-                                                <p>${author.published_date ? author.published_date : "No data found"}
+                                                <p>${author.name ? author.name : "No user found"}</p>
+                                                <p>${author.published_date ? author.published_date : "No date found"}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-star text-black me-3"></i>${rating.number}
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-star-half text-black me-3"></i>${rating.number}
                                         </div>
-                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"}</div>
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No viewers"}</div>
                                         <div class=" col-6 col-lg-3 " >
                                         <button onclick="seeDetails('${_id}')"
                                                 class="btn btn-danger px-4 ms-auto "
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal">Read More</button>
                                         </div>
                                     </div>
-                               
                             </div>
                         </div>
                     </div>`
@@ -124,22 +121,21 @@ const seeDetails = (news_id) => {
     fetch(url)
         .then(res => res.json())
         .then(details => showModal(details.data[0]))
-        .catch(error => console.log(error))
+        .catch(error => console.log("There was an error:", error))
 }
 const showModal = data => {
     console.log(data)
     const { image_url, thumbnail_url, total_view, author, rating, title } = data
     document.getElementById("exampleModalLabel").innerHTML = `<h3>${title}</h3>`;
     document.getElementById("body").innerHTML = `
-    <img src="${thumbnail_url}" class="w-100" style="height:300px" alt="">
+    <img src="${thumbnail_url}" class="w-100" alt="">
    <div>
    <h5>Review: ${rating.badge}</h5>
-   <h5>Total view: ${total_view}</h5>
-   <h5>Published on ${author.published_date}</h5></div>
+   <h5>Total view: ${total_view ? total_view : "No viewers available"}</h5>
+   <h5>Author: ${author.name ? author.name : "No author available"}</h5></div>
     `;
 }
 loadCategoris()
-
 const toggleSpinners = isloading => {
     const loaderSection = document.getElementById("loader")
     if (isloading) {
