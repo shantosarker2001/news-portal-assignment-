@@ -20,10 +20,14 @@ const displayCategories = category => {
         catContainer.appendChild(li)
     });
 }
+
 const loadDetails = (id, name) => {
     toggleSpinners(true)
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-
+    const container = document.getElementById('conter')
+    container.classList.remove('d-none')
+    const sortBy = document.getElementById('sortBy')
+    sortBy.classList.remove('d-none')
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.data, name))
@@ -32,23 +36,27 @@ const loadDetails = (id, name) => {
 }
 const displayDetails = (details, name) => {
     console.log(details)
+
     const counter = document.getElementById("conter")
 
     if (details.length === 0) {
-        counter.classList.add("bg-primary")
-        counter.innerHTML = `<h3 class="text-white py-2 px-3">No Data Found</h3>`
+        counter.classList.add("bg-light")
+        counter.innerHTML = `<h3 class=" py-2 px-3">No Data Found</h3>`
     }
     else {
-        counter.classList.add("bg-primary")
-        counter.innerHTML = `<h3 class="text-white py-2 px-3">${details.length} items founds for this ${name}</h3>`
+        counter.classList.add("bg-light")
+        counter.innerHTML = `<h3 class=" py-2 px-3">${details.length} items founds for ${name}</h3>`
     }
     // const viewContainer = document.getElementById('viewSection')
     // viewSection.innerHTML = `https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
     // <div></div>
     // `
+
     const postContainer = document.getElementById('post_container');
+    byView(details);
     postContainer.textContent = ""
     details.forEach((detail) => {
+
         const { author, details, title, rating, image_url, _id, thumbnail_url } = detail
         const div = document.createElement("div")
         div.classList.add("card", "mb-3")
@@ -59,8 +67,8 @@ const displayDetails = (details, name) => {
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h4 class="card-title">${title} </h4>
-                <p class="card-text">${details.slice(0, 450)}...</p>
+                <h5 class="card-title">${title} </h5>
+                <p class="card-text">${details.slice(0, 250)}...</p>
                 <div class="card-text d-flex gap-5">
                     <div class="author d-flex">
                         <div><img class="me-2" src="${author.img}" alt=""  style="height: 54px; width: 54px;border-radius: 50%"></div>
@@ -73,15 +81,16 @@ const displayDetails = (details, name) => {
                     <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
                     <div class="rating  my-auto fw-semibold fs-4"><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"
             }</div >
-    <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+        <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
                 </div >
             </div >
         </div >
     </div > `;
 
         postContainer.appendChild(div)
-
     });
+
+    // byDefault(details);
     toggleSpinners(false)
 }
 
@@ -106,6 +115,7 @@ const showModal = data => {
 
 }
 loadCategoris()
+
 const toggleSpinners = isloading => {
     const loaderSection = document.getElementById("loader")
     if (isloading) {
@@ -114,4 +124,12 @@ const toggleSpinners = isloading => {
     else {
         loaderSection.classList.add("d-none")
     }
+}
+// view_section
+
+const byView = (detail) => {
+    // console.log(detail)
+
+    detail.sort((a, b) => b.total_view - a.total_view)
+    return
 }

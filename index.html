@@ -56,14 +56,22 @@
     </header>
     <main class="container">
         <section>
-            <div class="container   rounded-4" id="conter">
+            <div class="container bg-light border  rounded-4 d-none my-3" id="conter">
 
             </div>
         </section>
         <section>
-            <div class="container  rounded-4" id="viewSection">
-                <div class="container bg-primary">
+            <div class="container border bg-light text-black d-none rounded-4" id="sortBy">
+                <div class="container  d-flex">
+                    <h2>Sort by:</h2>
+                    <select name="" class=" rounded">
+                        <button class="btn btn light">
+                            <option onclick="byView()" value="" id="byDefault"><button type="">By View</button></option>
+                            <option value="" onclick="byDefault()"><button type="">Default</button></option>
 
+                        </button>
+
+                    </select>
                 </div>
             </div>
         </section>
