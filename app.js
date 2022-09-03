@@ -49,7 +49,7 @@ const displayDetails = (details, name) => {
         counter.classList.add("bg-light")
         sortBy.classList.add("d-none")
         counter.innerHTML = `<h3 class=" py-2 px-3">No Data Found</h3>`
-        document.getElementById("footer").style.marginTop = "46vh"
+        document.getElementById("footer").style.marginTop = "50vh"
     }
     else {
         sortBy.classList.remove("d-none")
@@ -69,41 +69,41 @@ const displayDetails = (details, name) => {
         const { author, details, title, rating, image_url, _id, thumbnail_url } = detail
 
         const div = document.createElement("div")
-        div.classList.add("card", "mb-3")
+        div.classList.add("card", "mb-3", "shadow")
+
         div.innerHTML = `
 
         <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="${image_url}" class="img-fluid rounded-start" alt="...">
+                        <div class="col-md-3">
+                            <img src="${image_url}" class="img-fluid rounded-start d-block my-3 p-2 border" " alt="...">
                         </div>
 
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <div class="card-body">
                                 <div class="row ">
                                     <h5 class="card-title">${title} </h5>
-                                    <p class="card-text">${details.slice(0, 250)}...</p>
+                                    <p class="card-text">${details.slice(0, 200)}...</p>
                                 </div>
-
-                                
-                                    <div class="card-text row gap-0 mt-3">
+                                    <div class="card-text row gap-0 mt-2">
                                         <div class="author d-flex col-6 col-lg-3">
                                             <div>
                                                 <img class="me-2" src="${author.img}" alt=""
                                                     style="height: 54px; width: 54px;border-radius: 50%">
                                             </div>
                                             <div>
-                                                <h5>${author.name ? author.name : "No data found"}</h5>
+                                                <p>${author.name ? author.name : "No data found"}</p>
                                                 <p>${author.published_date ? author.published_date : "No data found"}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 ">${rating.number}
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-star text-black me-3"></i>${rating.number}
                                         </div>
                                         <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"}</div>
-                                        <div class=" col-6 col-lg-3 " ><button onclick="seeDetails('${_id}')"
-                                                class="btn btn-light px-4 bottom-0 "
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+                                        <div class=" col-6 col-lg-3 " >
+                                        <button onclick="seeDetails('${_id}')"
+                                                class="btn btn-danger px-4 ms-auto "
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal">Read More</button>
                                         </div>
                                     </div>
                                
@@ -131,13 +131,12 @@ const showModal = data => {
     const { image_url, thumbnail_url, total_view, author, rating, title } = data
     document.getElementById("exampleModalLabel").innerHTML = `<h3>${title}</h3>`;
     document.getElementById("body").innerHTML = `
-    <img src="${image_url}" class="w-100"  alt="">
+    <img src="${thumbnail_url}" class="w-100" style="height:300px" alt="">
    <div>
    <h5>Review: ${rating.badge}</h5>
    <h5>Total view: ${total_view}</h5>
    <h5>Published on ${author.published_date}</h5></div>
-    `
-
+    `;
 }
 loadCategoris()
 
@@ -156,5 +155,5 @@ const byView = (detail) => {
     // console.log(detail)
 
     detail.sort((a, b) => b.total_view - a.total_view)
-    return
+    return;
 }
