@@ -34,6 +34,7 @@ const loadDetails = (id, name) => {
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.data, name))
+
         .catch(error => console.log(error))
 
 }
@@ -42,12 +43,13 @@ const displayDetails = (details, name) => {
     console.log(details)
     const sortBy = document.getElementById('sortBy')
     const counter = document.getElementById("conter")
+    document.getElementById("footer").style.marginTop = "0px"
 
     if (details.length === 0) {
         counter.classList.add("bg-light")
         sortBy.classList.add("d-none")
         counter.innerHTML = `<h3 class=" py-2 px-3">No Data Found</h3>`
-
+        document.getElementById("footer").style.marginTop = "46vh"
     }
     else {
         sortBy.classList.remove("d-none")
@@ -65,34 +67,50 @@ const displayDetails = (details, name) => {
     details.forEach((detail) => {
 
         const { author, details, title, rating, image_url, _id, thumbnail_url } = detail
+
         const div = document.createElement("div")
         div.classList.add("card", "mb-3")
         div.innerHTML = `
+
         <div class="row g-0">
-        <div class="col-md-4">
-            <img src="${image_url}" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">${title} </h5>
-                <p class="card-text">${details.slice(0, 250)}...</p>
-                <div class="card-text d-flex gap-5">
-                    <div class="author d-flex">
-                        <div><img class="me-2" src="${author.img}" alt=""  style="height: 54px; width: 54px;border-radius: 50%"></div>
-                        <div>
-                            <h5>${author.name ? author.name : "No data found"}</h5>
-                            <p>${author.published_date ? author.published_date : "No data found"}</p>
+                        <div class="col-md-4">
+                            <img src="${image_url}" class="img-fluid rounded-start" alt="...">
                         </div>
-                    </div>
-              
-                    <div class="rating  my-auto fw-semibold fs-4">${rating.number}</div>
-                    <div class="rating  my-auto fw-semibold fs-4"><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"
-            }</div >
-        <button onclick="seeDetails('${_id}')" class="btn btn-light px-4  mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
-                </div >
-            </div >
-        </div >
-    </div > `;
+
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="row ">
+                                    <h5 class="card-title">${title} </h5>
+                                    <p class="card-text">${details.slice(0, 250)}...</p>
+                                </div>
+
+                                
+                                    <div class="card-text row gap-0 mt-3">
+                                        <div class="author d-flex col-6 col-lg-3">
+                                            <div>
+                                                <img class="me-2" src="${author.img}" alt=""
+                                                    style="height: 54px; width: 54px;border-radius: 50%">
+                                            </div>
+                                            <div>
+                                                <h5>${author.name ? author.name : "No data found"}</h5>
+                                                <p>${author.published_date ? author.published_date : "No data found"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 ">${rating.number}
+                                        </div>
+                                        <div class="rating fw-semibold fs-4 col-6 col-lg-3 "><i class="bi bi-eye text-black me-3"></i>${detail.total_view ? detail.total_view : "No data Found"}</div>
+                                        <div class=" col-6 col-lg-3 " ><button onclick="seeDetails('${_id}')"
+                                                class="btn btn-light px-4 bottom-0 "
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
+                                        </div>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>`
+            ;
 
         postContainer.appendChild(div)
     });
