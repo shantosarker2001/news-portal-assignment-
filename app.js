@@ -1,10 +1,13 @@
 const loadCategoris = () => {
     const url = `https://openapi.programming-hero.com/api/news/categories`
+    // const url = `https://openapi.programming-hero.com/api/news/${search}`
+
     fetch(url)
         .then(res => res.json())
         .then(category => displayCategories(category.data.news_category))
         .catch(error => console.log(error))
 }
+
 const displayCategories = category => {
     // console.log(category)
     const catContainer = document.getElementById("list_container")
@@ -24,26 +27,30 @@ const displayCategories = category => {
 const loadDetails = (id, name) => {
     toggleSpinners(true)
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-    const container = document.getElementById('conter')
-    container.classList.remove('d-none')
-    const sortBy = document.getElementById('sortBy')
-    sortBy.classList.remove('d-none')
+    // const container = document.getElementById('conter')
+    // container.classList.remove('d-none')
+    // const sortBy = document.getElementById('sortBy')
+    // sortBy.classList.remove('d-none')
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.data, name))
         .catch(error => console.log(error))
 
 }
+
 const displayDetails = (details, name) => {
     console.log(details)
-
+    const sortBy = document.getElementById('sortBy')
     const counter = document.getElementById("conter")
 
     if (details.length === 0) {
         counter.classList.add("bg-light")
+        sortBy.classList.add("d-none")
         counter.innerHTML = `<h3 class=" py-2 px-3">No Data Found</h3>`
+
     }
     else {
+        sortBy.classList.remove("d-none")
         counter.classList.add("bg-light")
         counter.innerHTML = `<h3 class=" py-2 px-3">${details.length} items founds for ${name}</h3>`
     }
